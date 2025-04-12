@@ -1,0 +1,50 @@
+table Stores
+	lineageTag: dd54bf5d-664f-4e4f-bf28-5f16b2058e47
+
+	column 'Store ID'
+		dataType: string
+		lineageTag: 5d8ac1bf-48af-4369-9529-7962140c75f9
+		summarizeBy: none
+		sourceColumn: Store ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Store Name'
+		dataType: string
+		lineageTag: 4b0fbcb8-9495-474e-a263-0d0a3b1f3901
+		summarizeBy: none
+		sourceColumn: Store Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Location
+		dataType: string
+		lineageTag: 6641d787-7bda-4b2e-9268-3c62d1d4a0db
+		summarizeBy: none
+		sourceColumn: Location
+
+		annotation SummarizationSetBy = Automatic
+
+	column Manager
+		dataType: string
+		lineageTag: 028102cc-9ce0-483b-b488-abf5bb32ec53
+		summarizeBy: none
+		sourceColumn: Manager
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Stores = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\dell\OneDrive - hiqtechng\Bootcamp\Retail_Store_Performance.xlsx"), null, true),
+				    Stores_Sheet = Source{[Item="Stores",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Stores_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Store ID", type text}, {"Store Name", type text}, {"Location", type text}, {"Manager", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,103 @@
+table 'Sales Transactions'
+	lineageTag: 44b8f862-7ba5-4d99-8052-eaaad8c6eac8
+
+	column 'Transaction ID'
+		dataType: string
+		lineageTag: ecbf60cb-7529-44ca-affc-d6e9e1c78718
+		summarizeBy: none
+		sourceColumn: Transaction ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: e40966ca-2094-4523-ba73-6e61588748c1
+		summarizeBy: none
+		sourceColumn: Date
+
+		variation Variation
+			isDefault
+			relationship: b7aa3de4-c7f6-4002-83ea-3ed716bab7d6
+			defaultHierarchy: LocalDateTable_a3f6b1f5-52fe-446a-a118-0d9de856635a.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Store ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: 006efeae-a194-4f8d-ae63-f910cc62fd9f
+		summarizeBy: none
+		sourceColumn: Store ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Product ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: ebdfb262-dee0-4fba-a81e-3ff817130f56
+		summarizeBy: none
+		sourceColumn: Product ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Employee ID'
+		dataType: string
+		lineageTag: ea030566-fcdf-4aaf-98b8-e51401e01753
+		summarizeBy: none
+		sourceColumn: Employee ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Units Sold'
+		dataType: int64
+		formatString: 0
+		lineageTag: 92c21757-4b63-4c61-8d44-0545759f80c9
+		summarizeBy: sum
+		sourceColumn: Units Sold
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Unit Price'
+		dataType: int64
+		formatString: 0
+		lineageTag: 9401fe42-3a21-4ea8-ad09-b54959a7da5c
+		summarizeBy: sum
+		sourceColumn: Unit Price
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Total Sales'
+		dataType: int64
+		formatString: 0
+		lineageTag: 32296b9a-b885-43ae-9237-daf2fbd84238
+		summarizeBy: sum
+		sourceColumn: Total Sales
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Cost of Sales' = RELATED(Products[Cost Price]) * [Unit Sold]
+		formatString: 0
+		lineageTag: 75995053-5c3d-4618-8a9b-ae434124e0a9
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Sales Transactions' = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\dell\OneDrive - hiqtechng\Bootcamp\Retail_Store_Performance.xlsx"), null, true),
+				    #"Sales Transactions_Sheet" = Source{[Item="Sales Transactions",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Sales Transactions_Sheet", [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Transaction ID", type text}, {"Date", Int64.Type}, {"Store ID", Int64.Type}, {"Product ID", Int64.Type}, {"Employee ID", type text}, {"Units Sold", Int64.Type}, {"Unit Price", Int64.Type}, {"Total Sales", Int64.Type}}),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Changed Type",{{"Date", type date}})
+				in
+				    #"Changed Type1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

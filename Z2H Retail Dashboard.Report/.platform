@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Z2H Retail Dashboard"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "486acbce-8b16-be14-487e-d9212a6be013"
+  }
+}

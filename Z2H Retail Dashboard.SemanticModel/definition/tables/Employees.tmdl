@@ -1,0 +1,51 @@
+table Employees
+	lineageTag: ef70f34f-bcbc-4e17-b3b9-8deda5ee67d0
+
+	column 'Employee ID'
+		dataType: string
+		lineageTag: 2ad997cc-df19-4afe-a82b-c295963fd908
+		summarizeBy: none
+		sourceColumn: Employee ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Employee Name'
+		dataType: string
+		lineageTag: d79ca063-3bf5-41df-b99d-e9b91461c369
+		summarizeBy: none
+		sourceColumn: Employee Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Store ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: b027ced8-5f17-4d6f-ade2-d2caefabe92c
+		summarizeBy: none
+		sourceColumn: Store ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Role
+		dataType: string
+		lineageTag: 049bd6ce-f910-48d7-b8da-3a050b339696
+		summarizeBy: none
+		sourceColumn: Role
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Employees = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\dell\OneDrive - hiqtechng\Bootcamp\Retail_Store_Performance.xlsx"), null, true),
+				    Employees_Sheet = Source{[Item="Employees",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Employees_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Employee ID", type text}, {"Employee Name", type text}, {"Store ID", Int64.Type}, {"Role", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

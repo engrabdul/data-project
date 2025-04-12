@@ -1,0 +1,24 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["Employees","Products","Sales Transactions","Stores","Calculation"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBIDesktopVersion = 2.139.2054.0 (24.12)+334ca1c95b576cc53924655643b0d36f21caac55
+
+ref table Employees
+ref table Products
+ref table 'Sales Transactions'
+ref table DateTableTemplate_02618afd-a8c2-4bac-a5a2-44d8beb359ed
+ref table LocalDateTable_a3f6b1f5-52fe-446a-a118-0d9de856635a
+ref table Stores
+ref table Calculation
+
+ref cultureInfo en-US
+

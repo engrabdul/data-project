@@ -1,0 +1,17 @@
+relationship b7aa3de4-c7f6-4002-83ea-3ed716bab7d6
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'Sales Transactions'.Date
+	toColumn: LocalDateTable_a3f6b1f5-52fe-446a-a118-0d9de856635a.Date
+
+relationship cea0d52e-2d60-34a5-8aeb-1dd8577c7790
+	fromColumn: 'Sales Transactions'.'Store ID'
+	toColumn: Stores.'Store ID'
+
+relationship f51053ab-daf1-53a5-9136-4ab484fd0938
+	fromColumn: 'Sales Transactions'.'Employee ID'
+	toColumn: Employees.'Employee ID'
+
+relationship c5accc28-a797-ca0f-0115-42e50c901176
+	fromColumn: 'Sales Transactions'.'Product ID'
+	toColumn: Products.'Product ID'
+

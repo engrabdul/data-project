@@ -1,0 +1,8 @@
+{
+  "version": "4.0",
+  "datasetReference": {
+    "byPath": {
+      "path": "../Z2H Retail Dashboard.SemanticModel"
+    }
+  }
+}

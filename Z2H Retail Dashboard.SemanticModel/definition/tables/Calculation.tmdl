@@ -1,0 +1,46 @@
+table Calculation
+	lineageTag: 99f95429-a72f-4bb9-b504-2f2da0e7df8b
+
+	measure 'Total Sales' = SUM('Sales Transactions'[Total Sales])
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: c6064bbd-b1b9-4c0c-9269-7b9dc75f5525
+
+	measure 'Unit Sold' = SUM('Sales Transactions'[Units Sold])
+		formatString: 0
+		lineageTag: bbdcc259-d981-4e18-a3a3-93ca9119e4a7
+
+	measure 'No of Employees' = COUNT(Employees[Employee ID])
+		formatString: 0
+		lineageTag: 0cfcba7c-6134-4892-ab6b-7ad58a06dabe
+
+	measure 'No of Store' = COUNT(Stores[Store ID])
+		formatString: 0
+		lineageTag: cb3db34f-e4e2-4b51-9e4d-ff435d652156
+
+	measure 'Total Cost of Sale' = SUM('Sales Transactions'[Cost of Sales])
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 61dc89a7-4fc2-427e-9ddd-7c19d54185df
+
+	measure Profit = [Total Sales] - [Total Cost of Sale]
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: 864c608d-1504-4220-9d8e-588f8b209faf
+
+	column Column1
+		dataType: string
+		lineageTag: 3901461f-3f76-49ac-bbe9-383c2a29668b
+		summarizeBy: none
+		sourceColumn: Column1
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Calculation = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

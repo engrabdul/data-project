@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Warehouse",
+    "displayName": "hiqdatawarehouse"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "b3131551-b43c-9684-43e4-17c3424fd5c2"
+  }
+}

@@ -1,0 +1,61 @@
+table Products
+	lineageTag: 1412a69e-5ab4-4a99-8602-f075555f3e47
+
+	column 'Product ID'
+		dataType: string
+		lineageTag: 92fe282e-77d6-44d9-8cfd-bddb7744d235
+		summarizeBy: none
+		sourceColumn: Product ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Product Name'
+		dataType: string
+		lineageTag: 919b09b5-5101-43bc-bee8-f4de821d7d4e
+		summarizeBy: none
+		sourceColumn: Product Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Category
+		dataType: string
+		lineageTag: 95af2aff-53cf-4dd6-9978-c4bd35362e78
+		summarizeBy: none
+		sourceColumn: Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Cost Price'
+		dataType: int64
+		formatString: 0
+		lineageTag: a7bd184e-3795-42d1-98ad-908a4b2a89eb
+		summarizeBy: none
+		sourceColumn: Cost Price
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Selling Price'
+		dataType: int64
+		formatString: 0
+		lineageTag: f35e81f2-dd4d-4477-a696-e91157273fc9
+		summarizeBy: none
+		sourceColumn: Selling Price
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Products = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\dell\OneDrive - hiqtechng\Bootcamp\Retail_Store_Performance.xlsx"), null, true),
+				    Products_Sheet = Source{[Item="Products",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Products_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Product ID", Int64.Type}, {"Product Name", type text}, {"Category", type text}, {"Cost Price", Int64.Type}, {"Selling Price", Int64.Type}}),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Changed Type",{{"Product ID", type text}})
+				in
+				    #"Changed Type1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
